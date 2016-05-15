@@ -1,19 +1,41 @@
 <h1>Post a Message</h1>
 <hr/>
 
-<!--A form is the only way that a user can submit information to a web application -->
-<form>
+<!--Question 9: We want to make sure that the user receives an error message if the message field is left blank. Without the below code, it will just keep returnign them to the messages site without telling them what's wrong or what it is that they're missing. Below is giving them a list with what is wrong and what happened. 
+-->
+<% if @message && @message.errors.any? %>
+
   <div>
-      <label>Author:</label>
-      <input type="text" name="author">
+    <strong>Some issued with your message, please fix them: </strong>
+    <ul>
+      <% @message.errors.full_messages.each do |message| %>
+        <li> <%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+
+<!--A form is the only way that a user can submit information to a web application -->
+<form method="post" action="/messages">
+  <div>
+    <label>Author:</label>
+    <!-- In Question 10.C it said that we need to put a default value for author, title, and content. Reason being is that it allowed us to submit messages with no author or title. So, we set a value attribut
+
+    Code I had before: <input type="text" name="author"> -->
+    <input type="text" name="author" value="<%= @message && @message.author %>">
   </div>
   <div>
     <label>Subject:</label>
-    <input type="text" name="title">
+    <!-- Same as Question 10.C above
+    Before:<input type="text" name="title"> -->
+    <input type="text" name="title" value="<%= @message && @message.title%>">
   </div>
   <div>
     <label>Content:</label>
-    <input type="text" name="content">
+    <!--ame as Question 10.C above
+    Before: <input type="text" name="content"> -->
+    <input type="text" name="content" value="<%= @message && @message.content %>">
   </div>
   <div>
     <input type="submit" value="Submit">
